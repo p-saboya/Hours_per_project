@@ -12,11 +12,35 @@ dataframe_pandas = pd.read_excel(workbook_assignament_matrix) # convert archive 
 searched_name = "Paola Saboyá"
 index = 1
 
-for index, name in dataframe_pandas['Recurso'].items():
+for index, name in dataframe_pandas['Recurso'].items() :
     #print(name)
-    if name == searched_name:
-       print(f"El nombre del recurso se encuentra en la fila {index}")
+    if name == searched_name :
+       print(f"The resource name is in the row {index}")
        break
-else:
-    print("El nombre del recurso no está en la matriz")
-       
+else :
+    print("Resource name is not in array")
+    
+number_working_days_this_week = input("enter working days this week ")
+number_working_hours_this_week = int(number_working_days_this_week)*8 # 8 is the number of working hour per day
+    
+project_name = dataframe_pandas.loc[index, 'Descripcion']
+print(project_name)
+
+weight_proj_this_week = input("enter project weight (number) : 0 => No Started or On hold, 1 => Minimum effort, 2 => Average effort, 3 => Demanding ")
+weight_proj_this_week = int(weight_proj_this_week)
+
+if weight_proj_this_week == 0 :
+    number_hours_this_week = 0
+    print("number_hours_this_week => ", number_hours_this_week)
+elif weight_proj_this_week == 1 :
+    number_hours_this_week = 2
+    print("number_hours_this_week => ", number_hours_this_week)
+elif weight_proj_this_week == 2 :
+    number_hours_this_week = 4
+    print("number_hours_this_week => ", number_hours_this_week)
+else :
+    number_hours_this_week = 8
+    print("number_hours_this_week => ", number_hours_this_week)
+
+percentage_calculation_this_week = (number_hours_this_week * 100) / number_working_hours_this_week
+print("percentage_calculation_this_week => ", percentage_calculation_this_week)
