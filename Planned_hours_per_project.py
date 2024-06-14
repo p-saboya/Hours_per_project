@@ -24,12 +24,15 @@ else :
 
 number_total_assigned_projects = input("enter total of assigned projects ")
 number_working_days_this_week = input("enter working days this week ")
-number_working_hours_this_week = int(number_working_days_this_week)*8 # 8 is the number of working hour per day
+number_working_hours_this_week = int(number_working_days_this_week)*8 # 8 is the number of working hours per day
 Excel_row_final_project = Excel_row_first_project + int(number_total_assigned_projects)
 print(Excel_row_final_project)
 #final_project_name = dataframe_pandas.loc[Excel_row_final_project, 'Descripcion']
 #print(final_project_name)
 
+Excel_row_first_project = 1 #Test
+Excel_row_final_project = 2 + 1 #Test
+#For --> Find the projects assigned to the resource one by one, then it calculates the percentage of dedication according to priority and working hours of the week
 for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
     project_name = dataframe_pandas.loc[project, 'Descripcion']
     print(project_name)
@@ -52,6 +55,6 @@ for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
     percentage_calculation_this_week = (number_hours_this_week * 100) / number_working_hours_this_week
     print("percentage_calculation_this_week => ", percentage_calculation_this_week)
 
-
-#dataframe_pandas.loc[index, "Febrero"] = number_hours_this_week
-#print(dataframe_pandas['Febrero'])'''
+    print(f"project nukber{project}")  
+    dataframe_pandas.loc[project, "Febrero"] = percentage_calculation_this_week
+print(dataframe_pandas['Febrero'])
