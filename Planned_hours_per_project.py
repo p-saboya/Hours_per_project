@@ -30,8 +30,8 @@ print(Excel_row_final_project)
 #final_project_name = dataframe_pandas.loc[Excel_row_final_project, 'Descripcion']
 #print(final_project_name)
 
-Excel_row_first_project = 1 #Test
-Excel_row_final_project = 2 + 1 #Test
+#Excel_row_first_project = 1 #Test
+#Excel_row_final_project = 2 + 1 #Test
 #For --> Find the projects assigned to the resource one by one, then it calculates the percentage of dedication according to priority and working hours of the week
 for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
     project_name = dataframe_pandas.loc[project, 'Descripcion']
@@ -55,6 +55,7 @@ for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
     percentage_calculation_this_week = (number_hours_this_week * 100) / number_working_hours_this_week
     print("percentage_calculation_this_week => ", percentage_calculation_this_week)
 
-    print(f"project nukber{project}")  
-    dataframe_pandas.loc[project, "Febrero"] = percentage_calculation_this_week
-print(dataframe_pandas['Febrero'])
+    #print(f"project number {project}")  
+    dataframe_pandas.loc[project, "Junio"] = percentage_calculation_this_week
+#print(dataframe_pandas['Febrero'])
+dataframe_pandas.to_excel('C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx', index=True, header=True)
