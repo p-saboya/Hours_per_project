@@ -38,7 +38,7 @@ def find_excel_projects_location() :
 Excel_row_first_project, Excel_row_final_project, number_total_assigned_projects = find_excel_projects_location()
 #print(type(Excel_row_first_project))
 
-#Funtion --> to validate that the days of the week are between 1 and 5
+#Funtion --> This is to validate that the days of the week are between 1 and 5
 def receiving_number_working_days_converts_to_hours() :
     list_number_days_week = []
     for day in range(1, 6):
@@ -57,11 +57,13 @@ def receiving_number_working_days_converts_to_hours() :
     
 number_working_hours_this_week = receiving_number_working_days_converts_to_hours()
 
-#Function --> It creates the arrangement of dedication percentages for each project for the week
+#Function --> This creates the arrangement of dedication percentages for each project for the week
 def arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas) : 
     cumulative_of_hours = []
     arregement_percentage_calculation_this_week = []
+    arregement_percentage_calculation_this_week_str = []
     sum_arregement_percentage_calculation_this_week = 0
+    #While --> This makes the minimum of 100% dedication estimated for the week
     while sum_arregement_percentage_calculation_this_week < 100 :
         for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
             project_name = dataframe_pandas.loc[project, 'Descripcion']
@@ -81,26 +83,28 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
             print("percentage_calculation_this_week => % ", percentage_calculation_this_week)
             arregement_percentage_calculation_this_week.append(percentage_calculation_this_week)
+            arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + "%")
         print("arregement_percentage_calculation_this_week ",arregement_percentage_calculation_this_week)
         sum_arregement_percentage_calculation_this_week = sum(arregement_percentage_calculation_this_week)
         print("sum_arregement_percentage_calculation_this_week => % ", sum_arregement_percentage_calculation_this_week)
-    return arregement_percentage_calculation_this_week
+    return arregement_percentage_calculation_this_week_str
 
-arregement_percentage_calculation_this_week = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
+arregement_percentage_calculation_this_week_str = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
 
-#Funtion --> It modifies the Excel file, writes the arregement_percentage_calculation_this_week on the column of the chose month 
-def modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week, Excel_row_first_project, Excel_row_final_project) :
+#Funtion --> This modifies the Excel file, writes the arregement_percentage_calculation_this_week on the column of the chose month 
+def modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week_str, Excel_row_first_project, Excel_row_final_project) :
     range_Excel_rows_to_modify = range(Excel_row_first_project, Excel_row_final_project)
-    #print("Excel_row_first_project => ", Excel_row_first_project)
-    #print("Excel_row_final_project =>", Excel_row_final_project)
-    dataframe_pandas.loc[range_Excel_rows_to_modify, 'Julio'] = arregement_percentage_calculation_this_week
+    dataframe_pandas.loc[range_Excel_rows_to_modify, 'Julio'] = arregement_percentage_calculation_this_week_str
     dataframe_pandas.to_excel('C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx', index=True, header=True)
+    #dataframe_pandas.to_excel('C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx', index=True,  style=lambda x: x.apply(lambda v: v.rjust(len(v), '.') + '%'))
     return None, None
     
 def main() :
-    modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week, Excel_row_first_project, Excel_row_final_project) 
+    modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week_str, Excel_row_first_project, Excel_row_final_project) 
     return None, None
     
 if __name__ == "__main__" :
     main()
 
+# Guardar el DataFrame en Excel con formato personalizado
+#df.to_excel("archivo.xlsx", index=False, style=lambda x: x.astype(object).apply(lambda v: v.strftime(formato_personalizado)))
