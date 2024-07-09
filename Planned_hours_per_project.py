@@ -61,7 +61,7 @@ number_working_hours_this_week = receiving_number_working_days_converts_to_hours
 def arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas) : 
     cumulative_of_hours = []
     arregement_percentage_calculation_this_week = []
-    arregement_percentage_calculation_this_week_str = []
+    #arregement_percentage_calculation_this_week_str = []
     sum_arregement_percentage_calculation_this_week = 0
     #While --> This makes the minimum of 100% dedication estimated for the week
     while sum_arregement_percentage_calculation_this_week < 100 :
@@ -83,8 +83,11 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
             print("percentage_calculation_this_week => % ", percentage_calculation_this_week)
             arregement_percentage_calculation_this_week.append(percentage_calculation_this_week)
-            arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + "%")
+            #arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + "%")
+            #Using Map function 
+        arregement_percentage_calculation_this_week_str = list(map(lambda project:str(percentage_calculation_this_week) + "%", arregement_percentage_calculation_this_week))   
         print("arregement_percentage_calculation_this_week ",arregement_percentage_calculation_this_week)
+        print("arregement_percentage_calculation_this_week_str ",arregement_percentage_calculation_this_week_str)
         sum_arregement_percentage_calculation_this_week = sum(arregement_percentage_calculation_this_week)
         print("sum_arregement_percentage_calculation_this_week => % ", sum_arregement_percentage_calculation_this_week)
     return arregement_percentage_calculation_this_week_str
