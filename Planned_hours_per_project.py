@@ -19,7 +19,7 @@ dataframe_pandas = pd.read_excel(excel_assignament_matrix) # convert archive in 
 def find_month_week_location() :
     print("dentro de find month")
     list_months = calendar.month_name[1:]
-    print(list_months)
+    #print(list_months)
     invalid_month = True
     while invalid_month == True :
         searched_month = input("enter the month of the year that you want to modify => ")
@@ -28,17 +28,17 @@ def find_month_week_location() :
         else:
             invalid_month = False
     print(searched_month)
-    title_row = 1
-    firts_row = dataframe_pandas[title_row]
+    firts_row = dataframe_pandas.head(1)
     print(firts_row)
-    for month in dataframe_pandas[title_row] :
-        valor_celda = month.value
+    print(type(firts_row))
+    for month in firts_row.items() :
+        #valor_celda = month.value
         if valor_celda == searched_month :
             print(f"Dato encontrado en la columna: {month.column}")
-            break'''
-    #return searched_month
+            break
+    return searched_month
 
-#searched_month = find_month_week_location()
+searched_month = find_month_week_location()'''
 
 
 #Function --> Search resource's name to find the Excel row of the first and the last projects assigned to he/she
@@ -131,6 +131,10 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             manual_approval = True
         else :
             manual_approval = False
+        arregement_percentage_calculation_this_week = [0] * len(arregement_percentage_calculation_this_week)
+        print(arregement_percentage_calculation_this_week)
+        cumulative_of_hours = [0] * len(cumulative_of_hours)
+        cumulative_sum_of_hours = 0
         #print("final manual_approval", manual_approval)
         #print(type(manual_approval))
     return arregement_percentage_calculation_this_week_str
