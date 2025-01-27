@@ -6,7 +6,7 @@ import calendar
 import locale
 locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8') #Spahinsh configuration for the name of the months
 
-excel_assignament_matrix = 'C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v1.xlsx' # Import the Excel archive
+excel_assignament_matrix = 'C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx' # Import the Excel archive
 dataframe_pandas = pd.read_excel(excel_assignament_matrix) # convert archive in dataframe - Pandas
 #assinement_sheet = dataframe_pandas['Asignacion']
 #print(dataframe_pandas)
@@ -97,7 +97,7 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
     #While --> This makes the minimum of 100% dedication estimated for the week
     manual_approval = False
     while manual_approval == False :
-        print("first manual_approval => ", manual_approval)
+        #print("first manual_approval => ", manual_approval)
     #while sum_arregement_percentage_calculation_this_week < 100 :
         for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
             project_name = dataframe_pandas.loc[project, 'Descripcion']
@@ -112,11 +112,13 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
                   invalid_weight = False
                   hours_proj_this_week = int(hours_proj_this_week)
             cumulative_of_hours.append(hours_proj_this_week)
+            #print(type(cumulative_of_hours))
             cumulative_sum_of_hours = sum(cumulative_of_hours)
             print("cumulative sum of hours => ", cumulative_sum_of_hours)
             percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
             percentage_calculation_this_week_round = round(percentage_calculation_this_week, 3)
             print("percentage_calculation_this_week => % ", percentage_calculation_this_week_round)
+            print('----------------')
             arregement_percentage_calculation_this_week.append(percentage_calculation_this_week)
             arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + " %")
         #Using Map function 
@@ -131,15 +133,24 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             manual_approval = True
         else :
             manual_approval = False
-        arregement_percentage_calculation_this_week = [0] * len(arregement_percentage_calculation_this_week)
-        print(arregement_percentage_calculation_this_week)
-        cumulative_of_hours = [0] * len(cumulative_of_hours)
-        cumulative_sum_of_hours = 0
+            arregement_percentage_calculation_this_week = [0] * len(arregement_percentage_calculation_this_week)
+            #print(arregement_percentage_calculation_this_week)
+            #cumulative_of_hours = [0] * len(cumulative_of_hours)4
+            cumulative_of_hours = []
+            cumulative_sum_of_hours = 0
+            print('*** NEW HOURS PER WEEK ESTIMATION***')
         #print("final manual_approval", manual_approval)
         #print(type(manual_approval))
     return arregement_percentage_calculation_this_week_str
-
+    
 arregement_percentage_calculation_this_week_str = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
+
+'''cumulative_of_hours_prove = [2, 0, 6, 0, 0, 8, 6]
+def new_stimation_non_zero_hours_projects (cumulative_of_hours_prove):
+    non_zero_hours_proyects = list(filter(lambda project_hours : project_hours == 0, cumulative_of_hours_prove))
+    return non_zero_hours_proyects
+non_zero_hours_proyects = new_stimation_non_zero_hours_projects (cumulative_of_hours_prove)
+print(non_zero_hours_proyects)'''
 
 #Funtion --> This modifies the Excel file, writes the arregement_percentage_calculation_this_week on the column of the chose month 
 def modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week_str, Excel_row_first_project, Excel_row_final_project) :
