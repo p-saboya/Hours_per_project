@@ -91,6 +91,7 @@ number_working_hours_this_week = receiving_number_working_days_converts_to_hours
 #Function --> This creates the arrangement of dedication percentages for each project for the week
 def arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas) : 
     cumulative_of_hours = []
+    cumulative_of_percentage = []
     arregement_percentage_calculation_this_week = []
     arregement_percentage_calculation_this_week_str = []
     sum_arregement_percentage_calculation_this_week = 0 
@@ -117,7 +118,10 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             print("cumulative sum of hours => ", cumulative_sum_of_hours)
             percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
             percentage_calculation_this_week_round = round(percentage_calculation_this_week, 3)
-            print("percentage_calculation_this_week => % ", percentage_calculation_this_week_round)
+            #print("percentage_calculation_this_week => % ", percentage_calculation_this_week_round)
+            cumulative_of_percentage.append(percentage_calculation_this_week_round)
+            cumulative_sum_of_percentage_this_week = sum(cumulative_of_percentage)
+            print("cumulative_sum_of_percentage_this_week => % ", cumulative_sum_of_percentage_this_week)
             print('----------------')
             arregement_percentage_calculation_this_week.append(percentage_calculation_this_week)
             arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + " %")
@@ -144,6 +148,8 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
     return arregement_percentage_calculation_this_week_str
     
 arregement_percentage_calculation_this_week_str = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
+
+#def 
 
 '''cumulative_of_hours_prove = [2, 0, 6, 0, 0, 8, 6]
 def new_stimation_non_zero_hours_projects (cumulative_of_hours_prove):
