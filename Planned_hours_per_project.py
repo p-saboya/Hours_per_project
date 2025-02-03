@@ -67,7 +67,6 @@ def find_excel_projects_location() :
     return Excel_row_first_project, Excel_row_final_project, number_total_assigned_projects
     
 Excel_row_first_project, Excel_row_final_project, number_total_assigned_projects = find_excel_projects_location()
-#print(type(Excel_row_first_project))
 
 #Funtion --> This is to validate that the days of the week are between 1 and 5
 def receiving_number_working_days_converts_to_hours() :
@@ -88,6 +87,13 @@ def receiving_number_working_days_converts_to_hours() :
     
 number_working_hours_this_week = receiving_number_working_days_converts_to_hours()
 
+#Function --> This calculate the percentage of each project per week (To divide the While to improve the second time calculation, and only ask for the projects with time different to zero)
+def percentage_calculation_this_week_f(hours_proj_this_week) :
+    percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
+    percentage_calculation_this_week_round = round(percentage_calculation_this_week, 3)
+    print("percentage_calculation_this_week => % ", percentage_calculation_this_week_round)
+    return percentage_calculation_this_week_round
+
 #Function --> This creates the arrangement of dedication percentages for each project for the week
 def arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas) : 
     cumulative_of_hours = []
@@ -95,15 +101,12 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
     arregement_percentage_calculation_this_week = []
     arregement_percentage_calculation_this_week_str = []
     sum_arregement_percentage_calculation_this_week = 0 
-    #While --> This makes the minimum of 100% dedication estimated for the week
     manual_approval = False
     while manual_approval == False :
-        #print("first manual_approval => ", manual_approval)
-    #while sum_arregement_percentage_calculation_this_week < 100 :
         for project in range(Excel_row_first_project, Excel_row_final_project, 1) :
             project_name = dataframe_pandas.loc[project, 'Descripcion']
+            print('----------------')
             print(project_name)
-            #While --> to choose the project weight (in hours) during the following week
             invalid_weight = True
             while invalid_weight == True:
               hours_proj_this_week = input("enter number of hours per week estimated for each project => ")
@@ -112,25 +115,21 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
               else:
                   invalid_weight = False
                   hours_proj_this_week = int(hours_proj_this_week)
+            #Print cumulative of hours
             cumulative_of_hours.append(hours_proj_this_week)
-            #print(type(cumulative_of_hours))
             cumulative_sum_of_hours = sum(cumulative_of_hours)
             print("cumulative sum of hours => ", cumulative_sum_of_hours)
-            percentage_calculation_this_week = (hours_proj_this_week * 100) / number_working_hours_this_week
-            percentage_calculation_this_week_round = round(percentage_calculation_this_week, 3)
-            #print("percentage_calculation_this_week => % ", percentage_calculation_this_week_round)
+            #Call to percentage calculation function
+            percentage_calculation_this_week_round = percentage_calculation_this_week_f(hours_proj_this_week)
             cumulative_of_percentage.append(percentage_calculation_this_week_round)
             cumulative_sum_of_percentage_this_week = sum(cumulative_of_percentage)
-            print("cumulative_sum_of_percentage_this_week => % ", cumulative_sum_of_percentage_this_week)
-            print('----------------')
-            arregement_percentage_calculation_this_week.append(percentage_calculation_this_week)
-            arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week) + " %")
-        #Using Map function 
-        #arregement_percentage_calculation_this_week_str = list(map(lambda project:str(percentage_calculation_this_week) + "%", arregement_percentage_calculation_this_week))   
-        #print("arregement_percentage_calculation_this_week ",arregement_percentage_calculation_this_week)
+            print("cumulative_sum_of_percentage_this_week => % ", cumulative_sum_of_percentage_this_week)            
+            arregement_percentage_calculation_this_week.append(percentage_calculation_this_week_round)
+            arregement_percentage_calculation_this_week_str.append(str(percentage_calculation_this_week_round) + " %")
         print("arregement_percentage_calculation_this_week_str ",arregement_percentage_calculation_this_week_str)
         sum_arregement_percentage_calculation_this_week = sum(arregement_percentage_calculation_this_week)
         print("sum_arregement_percentage_calculation_this_week => % ", sum_arregement_percentage_calculation_this_week)
+        
         manual_approval = input("Do you agree with the accumulated sum for the week of the assigned percentages for the projects?, If your answer is yes, please write Y if not, please write N => " )
         manual_approval = manual_approval.lower()
         if manual_approval == "y" : 
@@ -149,19 +148,16 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
     
 arregement_percentage_calculation_this_week_str = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
 
-#def 
-
-'''cumulative_of_hours_prove = [2, 0, 6, 0, 0, 8, 6]
-def new_stimation_non_zero_hours_projects (cumulative_of_hours_prove):
-    non_zero_hours_proyects = list(filter(lambda project_hours : project_hours == 0, cumulative_of_hours_prove))
-    return non_zero_hours_proyects
-non_zero_hours_proyects = new_stimation_non_zero_hours_projects (cumulative_of_hours_prove)
-print(non_zero_hours_proyects)'''
+'''def cumulative_sum_of_hours_and_percentage(hours_proj_this_week) :
+    cumulative_of_hours.append(hours_proj_this_week)
+    cumulative_sum_of_hours = sum(cumulative_of_hours)
+    print("cumulative sum of hours => ", cumulative_sum_of_hours)
+    return None, None'''
 
 #Funtion --> This modifies the Excel file, writes the arregement_percentage_calculation_this_week on the column of the chose month 
 def modifinding_dataframe_pandas(dataframe_pandas, arregement_percentage_calculation_this_week_str, Excel_row_first_project, Excel_row_final_project) :
     range_Excel_rows_to_modify = range(Excel_row_first_project, Excel_row_final_project)
-    dataframe_pandas.loc[range_Excel_rows_to_modify, 'Mayo'] = arregement_percentage_calculation_this_week_str
+    dataframe_pandas.loc[range_Excel_rows_to_modify, 'Febrero 2025'] = arregement_percentage_calculation_this_week_str
     dataframe_pandas.to_excel('C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx', index=True, header=True)
     #dataframe_pandas.to_excel('C:/Users/User/Documents/BPS Technology Solutions/Matriz Asignacion TD_v2.xlsx', index=True,  style=lambda x: x.apply(lambda v: v.rjust(len(v), '.') + '%'))
     return None, None
