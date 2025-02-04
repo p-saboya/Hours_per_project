@@ -60,7 +60,7 @@ def find_excel_projects_location() :
     while invalid_project_number == True :
         number_total_assigned_projects = input("enter total of assigned projects => ")
         if not number_total_assigned_projects.isnumeric() or number_total_assigned_projects == "0" :
-            print('Invalid option') 
+            print('Invalid number of assigned projects') 
         else:
             invalid_project_number = False
     Excel_row_final_project = Excel_row_first_project + int(number_total_assigned_projects)
@@ -78,7 +78,7 @@ def receiving_number_working_days_converts_to_hours() :
     while invalid_number_working_days == True :
         number_working_days_this_week = input("enter working days this week => ")
         if not number_working_days_this_week in list_number_days_week :
-            print('Invalid option')
+            print('Invalid number of working days')
         else:
             invalid_number_working_days = False
     number_working_hours_this_week = int(number_working_days_this_week)*8 # 8 h is the number of working hours per day in Colombia
@@ -86,6 +86,33 @@ def receiving_number_working_days_converts_to_hours() :
     return number_working_hours_this_week
     
 number_working_hours_this_week = receiving_number_working_days_converts_to_hours()
+
+#Funtion --> This is to validate that the manual approval is "y" or "n" (yes or not)
+def manual_approval_funtion() : 
+    #manual_approval = input("Do you agree with the accumulated sum for the week of the assigned percentages for the projects?, If your answer is yes, please write Y if not, please write N => " )
+    #manual_approval = manual_approval.lower()
+    invalid_manual_approval = True
+    while invalid_manual_approval == True :   
+        manual_approval = input("Do you agree with the accumulated sum for the week of the assigned percentages for the projects?, If your answer is yes, please write Y if not, please write N => " )
+        manual_approval = manual_approval.lower() 
+        if manual_approval == "y" : 
+            manual_approval = True
+            invalid_manual_approval = False
+        elif manual_approval == "n" :
+                manual_approval = False
+                invalid_manual_approval = False
+                '''arregement_percentage_calculation_this_week = [0] * len(arregement_percentage_calculation_this_week)
+                #print(arregement_percentage_calculation_this_week)
+                #cumulative_of_hours = [0] * len(cumulative_of_hours)4
+                cumulative_of_hours = []
+                cumulative_sum_of_hours = 0'''
+                print('*** NEW HOURS PER WEEK ESTIMATION ***')
+        else :
+            print('********************')
+            print('Invalid manual approval option')
+            invalid_manual_approval = True
+    return manual_approval
+
 
 #Function --> This calculate the percentage of each project per week (To divide the While to improve the second time calculation, and only ask for the projects with time different to zero)
 def percentage_calculation_this_week_f(hours_proj_this_week) :
@@ -111,7 +138,7 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             while invalid_weight == True:
               hours_proj_this_week = input("enter number of hours per week estimated for each project => ")
               if not hours_proj_this_week.isnumeric() or int(hours_proj_this_week) < 0 or int(hours_proj_this_week) > number_working_hours_this_week :
-                  print('Invalid option')
+                  print('Invalid number of hours')
               else:
                   invalid_weight = False
                   hours_proj_this_week = int(hours_proj_this_week)
@@ -130,11 +157,17 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
         sum_arregement_percentage_calculation_this_week = sum(arregement_percentage_calculation_this_week)
         print("sum_arregement_percentage_calculation_this_week => % ", sum_arregement_percentage_calculation_this_week)
         
-        manual_approval = input("Do you agree with the accumulated sum for the week of the assigned percentages for the projects?, If your answer is yes, please write Y if not, please write N => " )
+        manual_approval = manual_approval_funtion()
+        arregement_percentage_calculation_this_week = []
+        #print(arregement_percentage_calculation_this_week)
+        #cumulative_of_hours = [0] * len(cumulative_of_hours)4
+        cumulative_of_hours = []
+        cumulative_sum_of_hours = 0
+        '''manual_approval = input("Do you agree with the accumulated sum for the week of the assigned percentages for the projects?, If your answer is yes, please write Y if not, please write N => " )
         manual_approval = manual_approval.lower()
         if manual_approval == "y" : 
             manual_approval = True
-        else :
+        elif manual_approval == "n" :
             manual_approval = False
             arregement_percentage_calculation_this_week = [0] * len(arregement_percentage_calculation_this_week)
             #print(arregement_percentage_calculation_this_week)
@@ -142,8 +175,10 @@ def arragement_calculated_percentage_calculation_this_week(number_total_assigned
             cumulative_of_hours = []
             cumulative_sum_of_hours = 0
             print('*** NEW HOURS PER WEEK ESTIMATION***')
+        else :
+            print('Invalid option')
         #print("final manual_approval", manual_approval)
-        #print(type(manual_approval))
+        #print(type(manual_approval))'''
     return arregement_percentage_calculation_this_week_str
     
 arregement_percentage_calculation_this_week_str = arragement_calculated_percentage_calculation_this_week(number_total_assigned_projects, number_working_hours_this_week, dataframe_pandas)
